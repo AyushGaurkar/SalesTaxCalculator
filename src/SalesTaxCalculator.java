@@ -1,31 +1,31 @@
+import java.util.Scanner;
+
 public class SalesTaxCalculator {
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
         Receipt receipt = new Receipt();
 
-        // Sample Input 1
-        receipt.addItem(new Item("book", 12.49, false, true));
-        receipt.addItem(new Item("music CD", 14.99, false, false));
-        receipt.addItem(new Item("chocolate bar", 0.85, false, true));
+        System.out.println("Enter the number of items:");
+        int itemCount = scanner.nextInt();
+        scanner.nextLine();
 
-        System.out.println("Output for Input 1:");
+        for (int i = 0; i < itemCount; i++) {
+            System.out.println("Enter item details (format: name price imported exempt):");
+            String input = scanner.nextLine();
+            String[] details = input.split(" ");
+
+            String name = details[0];
+            double price = Double.parseDouble(details[1]);
+            boolean isImported = details[2].equalsIgnoreCase("yes");
+            boolean isExempt = details[3].equalsIgnoreCase("yes");
+
+            Item item = new Item(name, price, isImported, isExempt);
+            receipt.addItem(item);
+        }
+
+        System.out.println("\nReceipt:");
         receipt.printReceipt();
 
-        // Sample Input 2
-        receipt = new Receipt();
-        receipt.addItem(new Item("imported box of chocolates", 10.00, true, true));
-        receipt.addItem(new Item("imported bottle of perfume", 47.50, true, false));
-
-        System.out.println("\nOutput for Input 2:");
-        receipt.printReceipt();
-
-        // Sample Input 3
-        receipt = new Receipt();
-        receipt.addItem(new Item("imported bottle of perfume", 27.99, true, false));
-        receipt.addItem(new Item("bottle of perfume", 18.99, false, false));
-        receipt.addItem(new Item("packet of headache pills", 9.75, false, true));
-        receipt.addItem(new Item("box of imported chocolates", 11.25, true, true));
-
-        System.out.println("\nOutput for Input 3:");
-        receipt.printReceipt();
+        scanner.close();
     }
 }

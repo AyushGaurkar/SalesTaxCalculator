@@ -13,19 +13,14 @@ public class Receipt {
     }
 
     public void addItem(Item item) {
-        double itemTax = TaxCalculator.calculateTax(item);
-        double finalPrice = item.getPrice() + itemTax;
-
         items.add(item);
-        totalSalesTax += itemTax;
-        totalPrice += finalPrice;
+        totalSalesTax += item.getTax();
+        totalPrice += item.getPriceWithTax();
     }
 
     public void printReceipt() {
         for (Item item : items) {
-            double itemTax = TaxCalculator.calculateTax(item);
-            double finalPrice = item.getPrice() + itemTax;
-            System.out.println(item.getName() + ": " + String.format("%.2f", finalPrice));
+            System.out.println(item.getName() + ": " + String.format("%.2f", item.getPriceWithTax()));
         }
         System.out.println("Sales Taxes: " + String.format("%.2f", totalSalesTax));
         System.out.println("Total: " + String.format("%.2f", totalPrice));
