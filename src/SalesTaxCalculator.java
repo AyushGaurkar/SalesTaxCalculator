@@ -5,26 +5,42 @@ public class SalesTaxCalculator {
         Scanner scanner = new Scanner(System.in);
         Receipt receipt = new Receipt();
 
-        System.out.println("Enter the number of items:");
-        int itemCount = scanner.nextInt();
-        scanner.nextLine();
+        System.out.println("Enter items in format '1 item_name at price'. Type 'done' to finish:");
 
-        for (int i = 0; i < itemCount; i++) {
-            System.out.println("Enter item details (format: name price imported exempt):");
+        while (true) {
             String input = scanner.nextLine();
-            String[] details = input.split(" ");
 
-            String name = details[0];
-            double price = Double.parseDouble(details[1]);
-            boolean isImported = details[2].equalsIgnoreCase("yes");
-            boolean isExempt = details[3].equalsIgnoreCase("yes");
+            if (input.equalsIgnoreCase("done")) {
+                break;
+            }
 
-            Item item = new Item(name, price, isImported, isExempt);
-            receipt.addItem(item);
+
+            String[] parts = input.split(" at ");
+            if (parts.length != 2) {
+                System.out.println("Invalid format. Please use '1 item_name at price'.");
+                continue;
+            }
+
+            String nameAndQuantity = parts[0]; // "1 book"
+            double price = Double.parseDouble(parts[1]);
+
+            String[] nameParts = nameAndQuantity.split(" ", 2);
+            int quantity = Integer.parseInt(nameParts[0]);
+            String name = nameParts[1];
+
+            boolean isImported = name.contains("imported");
+            boolean isExempt = name.contains("book") || name.contains("chocolate") || name.contains("pills");
+
+            for (int i = 0; i < quantity; i++) {
+                Item item = new Item(name, price, isImported, isExempt);
+                receipt.addItem(item);
+            }
         }
 
         System.out.println("\nReceipt:");
-        receipt.printReceipt();
+        for (String line : receipt.generateReceipt()) {
+            System.out.println(line);
+        }
 
         scanner.close();
     }

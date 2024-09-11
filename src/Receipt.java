@@ -18,11 +18,15 @@ public class Receipt {
         totalPrice += item.getPriceWithTax();
     }
 
-    public void printReceipt() {
+    public List<String> generateReceipt() {
+        List<String> receiptLines = new ArrayList<>();
+
         for (Item item : items) {
-            System.out.println(item.getName() + ": " + String.format("%.2f", item.getPriceWithTax()));
+            receiptLines.add(item.getName() + ": " + String.format("%.2f", item.getPriceWithTax()));
         }
-        System.out.println("Sales Taxes: " + String.format("%.2f", totalSalesTax));
-        System.out.println("Total: " + String.format("%.2f", totalPrice));
+        receiptLines.add("Sales Taxes: " + String.format("%.2f", totalSalesTax));
+        receiptLines.add("Total: " + String.format("%.2f", totalPrice));
+
+        return receiptLines;
     }
 }
