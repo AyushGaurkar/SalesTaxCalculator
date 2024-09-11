@@ -1,0 +1,9 @@
+# Ignore class files
+*.class
+
+# Ignore IntelliJ IDEA project files
+.idea/
+*.iml
+
+# Ignore any compiled binaries
+/out/
